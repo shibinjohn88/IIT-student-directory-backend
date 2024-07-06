@@ -74,4 +74,24 @@ students.delete('/:id', async (req, res) => {
     
 })
 
+//update a student record
+students.put('/:id', async (req, res) => {
+    id = req.params.id
+    const { firstname, lastname, birthdate, grade, email } = req.body
+    if (isNaN(id)) {
+        res.status(400).send('Student ID not valid')
+    }
+    else {
+        cmd = 'UPDATE students set firstname = $1, lastname = $2, birthdate = $3, grade = $4, email = $5 where studentid=$6'
+        try {
+            const result = await db.query(cmd, [firstname, lastname, birthdate, grade, email, id])
+            res.json(result.rows)
+        }
+        catch (err) {
+            console.error(err);
+            res.status(500).send('Internal Server Errror')
+        }
+    }
+})
+
 module.exports = students
