@@ -23,10 +23,10 @@ students.get('/', async (req, res) => {
 
 //add a student to db
 students.post('/', async (req, res) => {
-    const { firstname, lastname, birthdate, grade, email } = req.body
+    const { firstname, lastname, dob, grade, email } = req.body
     cmd = 'INSERT INTO students (firstname, lastname, birthdate, grade, email) VALUES ($1, $2, $3, $4, $5)'
     try {
-        const result = await db.query(cmd, [firstname, lastname, birthdate, grade, email]);
+        const result = await db.query(cmd, [firstname, lastname, dob, grade, email]);
         res.status(201).json({"status:": "success"});
       } catch (error) {
         console.error('Error inserting data:', error);
@@ -77,14 +77,14 @@ students.delete('/:id', async (req, res) => {
 //update a student record
 students.put('/:id', async (req, res) => {
     id = req.params.id
-    const { firstname, lastname, birthdate, grade, email } = req.body
+    const { firstname, lastname, dob, grade, email } = req.body
     if (isNaN(id)) {
         res.status(400).send('Student ID not valid')
     }
     else {
         cmd = 'UPDATE students set firstname = $1, lastname = $2, birthdate = $3, grade = $4, email = $5 where studentid=$6'
         try {
-            const result = await db.query(cmd, [firstname, lastname, birthdate, grade, email, id])
+            const result = await db.query(cmd, [firstname, lastname, dob, grade, email, id])
             res.json(result.rows)
         }
         catch (err) {
