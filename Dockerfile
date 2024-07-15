@@ -3,11 +3,11 @@ FROM node:20-alpine
 
 # Set environment variables
 ENV PORT=3000
-ENV RDS_HOSTNAME=host.docker.internal
-ENV RDS_USERNAME=postgres
-ENV RDS_PASSWORD=password
-ENV RDS_PORT=5432
-ENV RDS_DB_NAME=student_directory
+# ENV RDS_HOSTNAME=host.docker.internal
+# ENV RDS_USERNAME=postgres
+# ENV RDS_PASSWORD=password
+# ENV RDS_PORT=5432
+# ENV RDS_DB_NAME=student_directory
 
 # Create and set the working directory inside the container
 WORKDIR /app

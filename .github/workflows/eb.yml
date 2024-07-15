@@ -1,0 +1,29 @@
+name: Deploy React app from GitHub to AWS Elastic Beanstalk
+on:
+  # activates the workflow when there is a push on the main branch
+  push:
+    branches:
+      - production
+jobs:
+  deploy:
+    runs-on: ubuntu-latest # the OS your job should run on
+    steps:
+      - name: Checkout Latest Repo
+        # checks out your repository under the GitHub workspace so that your workflow can access it
+        uses: actions/checkout@v2
+
+      - name: Generate Deployment Package 
+        # zip all files except .git
+        run: zip -r studentdirectorybackend.zip * -x "**.git**"
+
+      - name: Deploy to EB
+        uses: einaregilsson/beanstalk-deploy@v21
+        with:
+         #  input the credentials you used to setup AWS CLI and credentials for the application environment
+          aws_access_key: "${{ secrets.ACCESS_KEY }}"
+          aws_secret_key: "${{ secrets.SECRET_ACCESS_KEY }}"
+          application_name: student-directory-backend
+          environment_name: Student-directory-backend-env
+          version_label: "${{ github.sha }}"
+          region: us-east-1
+          deployment_package: studentdirectorybackend.zip
