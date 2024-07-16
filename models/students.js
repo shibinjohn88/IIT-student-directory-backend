@@ -6,7 +6,7 @@ const pool = new Pool({
   password: process.env.RDS_PASSWORD,
   host: process.env.RDS_HOSTNAME,
   port: process.env.RDS_PORT, // default Postgres port
-  database: process.env.DATABASE 
+  database: process.env.RDS_DB_NAME
 });
 
 module.exports = {
