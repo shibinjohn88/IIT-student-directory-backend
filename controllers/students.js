@@ -10,7 +10,7 @@ students.use(bodyParser.json())
 
 //get list of all students in the db
 students.get('/', async (req, res) => {
-    cmd = 'SELECT * FROM students'
+    const cmd = 'SELECT * FROM students'
     try {
         const result = await db.query(cmd)
         res.json(result.rows)
@@ -24,7 +24,7 @@ students.get('/', async (req, res) => {
 //add a student to db
 students.post('/', async (req, res) => {
     const { firstname, lastname, dob, grade, email } = req.body
-    cmd = 'INSERT INTO students (firstname, lastname, birthdate, grade, email) VALUES ($1, $2, $3, $4, $5)'
+    const cmd = 'INSERT INTO students (firstname, lastname, birthdate, grade, email) VALUES ($1, $2, $3, $4, $5)'
     try {
         const result = await db.query(cmd, [firstname, lastname, dob, grade, email]);
         res.status(201).json({"status:": "success"});
@@ -36,12 +36,12 @@ students.post('/', async (req, res) => {
 
 //get details of a specific student by student id
 students.get('/:id', async (req, res) => {
-    id = req.params.id
+    let id = req.params.id
     if (isNaN(id)) {
         res.status(400).send('Student ID not valid')
     }
     else {
-        cmd = 'SELECT * FROM students where studentid=$1'
+        const cmd = 'SELECT * FROM students where studentid=$1'
         try {
             const result = await db.query(cmd, [id])
             res.json(result.rows)
@@ -56,15 +56,19 @@ students.get('/:id', async (req, res) => {
 
 //delete a student record
 students.delete('/:id', async (req, res) => {
-    id = req.params.id
+    let id = req.params.id
     if (isNaN(id)) {
         res.status(400).send('Student ID not valid')
     }
     else {
-        cmd = 'DELETE FROM students where studentid=$1'
+        const cmd = 'DELETE FROM students where studentid=$1 RETURNING *'
         try {
             const result = await db.query(cmd, [id])
-            res.json(result.rows)
+            if (result.rows.length === 0) {
+                res.status(404).json({"error": "Student not found"});
+            } else {
+                res.status(201).json({"status": "success"})
+            }
         }
         catch (err) {
             console.error(err);
@@ -76,13 +80,13 @@ students.delete('/:id', async (req, res) => {
 
 //update a student record
 students.put('/:id', async (req, res) => {
-    id = req.params.id
+    let id = req.params.id
     const { firstname, lastname, dob, grade, email } = req.body
     if (isNaN(id)) {
         res.status(400).send('Student ID not valid')
     }
     else {
-        cmd = 'UPDATE students set firstname = $1, lastname = $2, birthdate = $3, grade = $4, email = $5 where studentid=$6'
+        const cmd = 'UPDATE students set firstname = $1, lastname = $2, birthdate = $3, grade = $4, email = $5 where studentid=$6 RETURNING *'
         try {
             const result = await db.query(cmd, [firstname, lastname, dob, grade, email, id])
             res.json(result.rows)
