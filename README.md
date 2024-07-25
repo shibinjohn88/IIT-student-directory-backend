@@ -24,14 +24,17 @@ Database used for this application is an AWS RDS PostgreSQL.
 URL: http://abcstudentdirectory.us-east-1.elasticbeanstalk.com:3000
 
 ### Endpoints
-GET /api/students: get all students records
-POST /api/students: create a student record
-GET /api/students/studentid: get a specific student record
-DELETE /api/students/studentid: delete a student record
-PUT /api/students/studentid: edit a student record
+- GET /api/students: get all students records
+- POST /api/students: create a student record
+- GET /api/students/studentid: get a specific student record
+- DELETE /api/students/studentid: delete a student record
+- PUT /api/students/studentid: edit a student record
 
 
+## Frontend  
 
+Frontend for this application is Student Directory Frontend.
+https://github.com/shibinjohn88/IIT-student-directory-frontend
 
 
 
