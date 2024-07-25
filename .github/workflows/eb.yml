@@ -3,7 +3,7 @@ on:
   # activates the workflow when there is a push on the main branch
   push:
     branches:
-      - production
+      - master
 jobs:
   deploy:
     runs-on: ubuntu-latest # the OS your job should run on
